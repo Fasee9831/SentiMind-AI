@@ -782,6 +782,11 @@ def favicon():
     robot_dir = os.path.join(app.root_path, 'public', 'robot')
     return send_from_directory(robot_dir, 'robot_face.png', mimetype='image/png')
 
+@app.route('/static/<path:filename>')
+def serve_static(filename):
+    static_dir = os.path.join(app.root_path, 'static')
+    return send_from_directory(static_dir, filename)
+
 @app.route('/extract-document', methods=['POST'])
 def extract_document():
     if 'file' not in request.files:
