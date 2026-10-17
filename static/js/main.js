@@ -172,11 +172,10 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         if (video) {
-            // Track playback time for seamless ending right when 100% ready animation finishes
+            // Seamless ending right as video approaches its natural completion
             video.addEventListener('timeupdate', () => {
-                if (!isExiting) {
-                    // Video duration is 20.00s. The 100% ready animation settles at 19.8s
-                    if (video.currentTime >= 19.8) {
+                if (!isExiting && video.duration) {
+                    if (video.currentTime >= Math.max(video.duration - 0.25, 1)) {
                         exitPreloader(false);
                     }
                 }
@@ -195,31 +194,40 @@ document.addEventListener('DOMContentLoaded', () => {
                 setTimeout(() => exitPreloader(false), 2000);
             });
 
-            // Native muted autoplay starts instantly with 0ms stall
-            video.currentTime = 0;
+            // Native muted playback starts cleanly as soon as video metadata and frames are available
             video.muted = true;
             updateAudioUI(false);
-            const playPromise = video.play();
-            if (playPromise !== undefined) {
-                playPromise.catch((err) => {
-                    console.log('Video autoplay deferred by browser:', err);
-                    const resumeOnInteract = () => {
-                        video.play().catch(() => {});
-                    };
-                    window.addEventListener('touchstart', resumeOnInteract, { once: true });
-                    window.addEventListener('click', resumeOnInteract, { once: true });
-                });
+
+            const startPlay = () => {
+                const playPromise = video.play();
+                if (playPromise !== undefined) {
+                    playPromise.catch((err) => {
+                        console.log('Video autoplay deferred by browser, resuming on interaction:', err);
+                        const resumeOnInteract = () => {
+                            video.play().catch(() => {});
+                        };
+                        window.addEventListener('touchstart', resumeOnInteract, { once: true });
+                        window.addEventListener('click', resumeOnInteract, { once: true });
+                    });
+                }
+            };
+
+            if (video.readyState >= 2) {
+                startPlay();
+            } else {
+                video.addEventListener('loadedmetadata', startPlay, { once: true });
+                video.addEventListener('canplay', startPlay, { once: true });
             }
         } else {
             setTimeout(() => exitPreloader(false), 2000);
         }
 
-        // Safety timeout: Ensure preloader never hangs indefinitely
+        // Safety timeout: 35s to allow full video playthrough without cutting off
         setTimeout(() => {
             if (!isExiting) {
                 exitPreloader(false);
             }
-        }, 22000);
+        }, 35000);
     }
 
     // Run Preloader on initial startup
