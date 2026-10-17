@@ -1,0 +1,732 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="A next-generation real-time sentiment analysis and document intelligence platform. Analyze text documents, spreadsheets, Excel (.xlsx, .xls), CSV, PDFs, and Word documents.">
+    <title>SentiMind AI - Document & Text Sentiment Intelligence</title>
+    <!-- Google Fonts: Outfit (Headings) & Plus Jakarta Sans (Body) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Anti-Flash Theme Script (executes immediately before paint) -->
+    <script>
+        (function() {
+            try {
+                var savedTheme = localStorage.getItem('sentimind-theme');
+                var theme = savedTheme;
+                if (!theme) {
+                    theme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+                }
+                document.documentElement.setAttribute('data-theme', theme);
+            } catch (e) {
+                document.documentElement.setAttribute('data-theme', 'light');
+            }
+        })();
+    </script>
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="{{ url_for('serve_robot', filename='robot_face.png') }}">
+    
+    <!-- Local Stylesheet -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}?v=mobile-perf-v3">
+</head>
+<body class="preloader-active">
+    <!-- SentiMind.ai Premium Cinema Robot Preloader Experience -->
+    <aside id="startupPreloader" class="startup-preloader" role="dialog" aria-modal="true" aria-label="SentiMind.ai Startup Experience">
+        <!-- Clean Glassmorphic Header Controls -->
+        <header class="preloader-top-bar">
+            <div class="preloader-brand">
+                <div class="preloader-brand-mark">
+                    <img src="{{ url_for('serve_robot', filename='robot_face.png') }}" class="preloader-robot-icon" alt="SentiMind AI Robot" width="24" height="24">
+                </div>
+                <span class="preloader-brand-text">SentiMind<span class="brand-ai">.ai</span></span>
+            </div>
+
+            <div class="preloader-actions">
+                <!-- Audio Mute / Unmute Button -->
+                <button type="button" id="preloaderAudioToggle" class="preloader-pill-btn audio-btn" aria-label="Toggle audio sound">
+                    <span class="audio-wave-bars" aria-hidden="true">
+                        <span class="eq-bar bar-1"></span>
+                        <span class="eq-bar bar-2"></span>
+                        <span class="eq-bar bar-3"></span>
+                    </span>
+                    <span id="preloaderAudioLabel" class="pill-btn-text">Tap for Sound</span>
+                </button>
+
+                <!-- Skip Intro Button -->
+                <button type="button" id="preloaderSkipBtn" class="preloader-pill-btn skip-btn" aria-label="Skip intro to dashboard">
+                    <span class="pill-btn-text">Skip Intro</span>
+                    <svg class="skip-btn-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                </button>
+            </div>
+        </header>
+
+        <!-- Uncropped Studio Robot Video Experience (Seamless Edge-to-Edge) -->
+        <video 
+            id="preloaderVideo" 
+            class="preloader-fullscreen-video" 
+            autoplay
+            muted
+            playsinline 
+            webkit-playsinline
+            preload="metadata"
+            src="/robot/preloader.mp4?v=clean-hd"
+        ></video>
+
+        <!-- Fallback Robot Image (Displayed if Video fails to load or play) -->
+        <div id="preloaderFallback" class="preloader-fallback-card" style="display: none;">
+            <img src="/robot/robot.jpg" alt="SentiMind AI Assistant" class="preloader-fallback-img" />
+            <p class="fallback-status-text">Getting everything ready…</p>
+        </div>
+    </aside>
+
+    <!-- Ambient Background Lighting Orbs & Interactive Particle Canvas -->
+    <div class="ambient-orbs" aria-hidden="true">
+        <div class="ambient-orb orb-1"></div>
+        <div class="ambient-orb orb-2"></div>
+        <div class="ambient-orb orb-3"></div>
+    </div>
+    <canvas id="celebrationCanvas" class="celebration-canvas" aria-hidden="true"></canvas>
+
+    <main class="app-container">
+        <!-- Top Navigation Bar & Header -->
+        <header class="app-header">
+            <div class="top-nav">
+                <div class="logo-wrapper">
+                    <div class="logo-mark">
+                        <img src="{{ url_for('serve_robot', filename='robot_face.png') }}" class="logo-robot-icon" alt="SentiMind AI Robot" width="28" height="28">
+                    </div>
+                    <span class="logo-text">SentiMind<span class="logo-dot">.</span><span class="logo-accent">AI</span></span>
+                </div>
+
+                <div class="nav-actions">
+                    <!-- Replay Intro Button -->
+                    <button type="button" id="replayIntroBtn" class="replay-intro-btn" aria-label="Replay startup preloader" title="Replay intro animation">
+                        <svg class="replay-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <path d="M1 4v6h6"></path>
+                            <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path>
+                        </svg>
+                        <span class="replay-btn-text">Intro</span>
+                    </button>
+
+                    <!-- Light / Dark Theme Toggle Button -->
+                    <button type="button" id="themeToggleBtn" class="theme-toggle-btn" aria-label="Toggle between light and dark theme" role="switch" aria-checked="false" title="Toggle light/dark theme">
+                        <span class="toggle-icon-wrap" aria-hidden="true">
+                            <svg class="theme-svg sun-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="5"></circle>
+                                <line x1="12" y1="1" x2="12" y2="3"></line>
+                                <line x1="12" y1="21" x2="12" y2="23"></line>
+                                <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                                <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                                <line x1="1" y1="12" x2="3" y2="12"></line>
+                                <line x1="21" y1="12" x2="23" y2="12"></line>
+                                <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                                <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                            </svg>
+                            <svg class="theme-svg moon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                            </svg>
+                        </span>
+                        <span class="theme-mode-text" id="themeLabelText">Dark</span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="header-content">
+                <h1 class="hero-title">
+                    <span class="reveal-text-ltr">Understand Sentiment</span>
+                    <span class="hero-typed-wrapper">
+                        <span class="typed-phrase" id="typedPhrase">in text, documents & feedback</span><span class="typewriter-cursor" aria-hidden="true">|</span>
+                    </span>
+                </h1>
+                <p class="subtitle reveal-subtitle" id="heroSubtitle" aria-label="Instantly analyze text documents, spreadsheets, customer feedback, and files to understand tone, sentiment, and key insights.">Instantly analyze text documents, spreadsheets, customer feedback, and files to understand tone, sentiment, and key insights.</p>
+            </div>
+        </header>
+
+        <!-- Dashboard Grid -->
+        <section class="dashboard-grid">
+            <!-- Left: Input Card -->
+            <div class="glass-card input-card">
+                <div class="card-header">
+                    <!-- Mode Switcher Tabs -->
+                    <div class="mode-tabs">
+                        <button type="button" class="tab-btn active" id="tabDirectText" data-mode="text">
+                            <svg class="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                                <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                            </svg>
+                            <span class="tab-label-text"><span class="tab-txt-desktop">Type or Paste Text</span><span class="tab-txt-mobile">Text Input</span></span>
+                        </button>
+                        <button type="button" class="tab-btn" id="tabDocUpload" data-mode="document">
+                            <svg class="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                <polyline points="14 2 14 8 20 8"></polyline>
+                                <line x1="12" y1="18" x2="12" y2="12"></line>
+                                <line x1="9" y1="15" x2="15" y2="15"></line>
+                            </svg>
+                            <span class="tab-label-text"><span class="tab-txt-desktop">Upload Spreadsheet or File</span><span class="tab-txt-mobile">Upload File</span></span>
+                        </button>
+                    </div>
+                    <span class="badge" id="engineBadge">Instant AI Analysis</span>
+                </div>
+
+                <!-- DIRECT TEXT MODE SECTION -->
+                <div id="directTextSection" class="input-section active-section">
+                    <form id="sentimentForm" class="form-wrapper">
+                        <div class="quick-actions">
+                            <span class="quick-title">Try an Example:</span>
+                            <button type="button" class="sample-chip" data-sample="positive">Positive Feedback</button>
+                            <button type="button" class="sample-chip" data-sample="negative">Critical Issue</button>
+                            <button type="button" class="sample-chip" data-sample="batch">Multiple Entries</button>
+                        </div>
+                        <div class="textarea-container">
+                            <textarea id="textInput" name="text" placeholder="Type or paste text, feedback, documents, or multiple entries (one per line or numbered) to analyze together..." maxlength="100000"></textarea>
+                            <div class="textarea-indicators">
+                                <span id="charCounter" class="indicator">0 / 100,000 characters</span>
+                                <span id="wordCounter" class="indicator">0 words</span>
+                            </div>
+                        </div>
+                        <div class="action-buttons-row">
+                            <button type="button" id="clearTextBtn" class="secondary-btn" title="Clear text input">Clear</button>
+                            <button type="submit" id="analyzeBtn" class="primary-btn">
+                                <span class="btn-text">Analyze Sentiment</span>
+                                <svg class="btn-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M22 2L11 13" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M22 2L15 22L11 13L2 9L22 2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                                <div class="btn-loader hidden"></div>
+                            </button>
+                        </div>
+                        <div class="keyboard-tip">
+                            <span>💡 Tip: Press <kbd>Ctrl</kbd> + <kbd>Enter</kbd> to analyze instantly</span>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- DOCUMENT UPLOAD MODE SECTION -->
+                <div id="docUploadSection" class="input-section hidden">
+                    <!-- Drop Zone -->
+                    <div id="dropZone" class="dropzone-area">
+                        <input type="file" id="fileInput" class="file-input-hidden" accept=".xlsx,.xls,.csv,.pdf,.docx,.txt,.md,.log">
+                        <div class="dropzone-content">
+                            <div class="upload-icon-circle">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                    <polyline points="17 8 12 3 7 8"></polyline>
+                                    <line x1="12" y1="3" x2="12" y2="15"></line>
+                                </svg>
+                            </div>
+                            <h3><span class="desktop-only-inline">Drag & drop your spreadsheet, text file, or document here</span><span class="mobile-only-inline">Upload your spreadsheet or document</span></h3>
+                            <p class="drop-subtext">or <span class="browse-link"><span class="desktop-only-inline">click to choose a file from your computer</span><span class="mobile-only-inline">tap to choose a file from your device</span></span></p>
+                            
+                            <div class="format-badges">
+                                <span class="format-badge highlight-format">Excel (.xlsx, .xls)</span>
+                                <span class="format-badge highlight-format">CSV</span>
+                                <span class="format-badge">PDF</span>
+                                <span class="format-badge">Word (.docx)</span>
+                                <span class="format-badge">Text (.txt)</span>
+                            </div>
+                            <span class="file-size-note">Supports files with thousands of records or documents up to 32 MB</span>
+                            <button type="button" id="loadSampleDocBtn" class="sample-doc-btn" title="Instantly test document analysis with a built-in dataset">
+                                💡 Or click to load a sample spreadsheet dataset
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Extraction Loading Overlay -->
+                    <div id="extractLoader" class="extract-loader hidden">
+                        <div class="pulse-spinner"></div>
+                        <h4>Extracting Text & Columns...</h4>
+                        <p id="extractLoaderSubtext">Scanning document structure and detecting content</p>
+                    </div>
+
+                    <!-- Extracted Document Card (shown after successful file extraction) -->
+                    <div id="documentInfoCard" class="document-info-card hidden">
+                        <div class="doc-card-top">
+                            <div class="doc-file-identity">
+                                <div class="doc-icon-badge" id="docTypeBadge">XLSX</div>
+                                <div class="doc-name-details">
+                                    <span class="doc-filename" id="docFilename">reviews.xlsx</span>
+                                    <div class="doc-meta-tags">
+                                        <span class="doc-tag" id="docSizeTag">0 KB</span>
+                                        <span class="doc-tag" id="docUnitsTag">0 reviews</span>
+                                        <span class="doc-tag" id="docWordsTag">0 words</span>
+                                        <span class="doc-tag batch-detected-tag hidden" id="docBatchTag">Batch Mode</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <button type="button" id="removeDocBtn" class="icon-action-btn" title="Remove document and upload another">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                                </svg>
+                            </button>
+                        </div>
+
+                        <!-- EXCEL / SPREADSHEET COLUMN SELECTOR & CATEGORIZATION -->
+                        <div id="columnSelectRow" class="column-select-row hidden">
+                            <div class="col-select-header">
+                                <label for="columnSelect" class="column-select-label">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="col-icon">
+                                        <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                                        <line x1="3" y1="9" x2="21" y2="9"></line>
+                                        <line x1="9" y1="21" x2="9" y2="9"></line>
+                                    </svg>
+                                    Select the text column to analyze:
+                                </label>
+                                <span class="column-detected-hint" id="colDetectedHint">★ Primary text column auto-selected</span>
+                            </div>
+                            <div class="select-wrapper">
+                                <select id="columnSelect" class="column-select-dropdown">
+                                    <!-- Populated dynamically with categorized columns -->
+                                </select>
+                            </div>
+                            <!-- Detected Columns Categorization Pills -->
+                            <div class="col-categorization-summary" id="colCategorizationSummary">
+                                <span class="summary-title">Detected Columns in File:</span>
+                                <div class="column-pills" id="columnPills"></div>
+                            </div>
+                            <!-- Warning Banner if Non-Review / ID Column is Selected -->
+                            <div id="columnWarningAlert" class="column-warning-alert hidden">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="alert-icon">
+                                    <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+                                    <line x1="12" y1="9" x2="12" y2="13"></line>
+                                    <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                                </svg>
+                                <span id="columnWarningText">Notice: This column appears to be an ID or numeric number. For accurate sentiment analysis, please select a column containing text content.</span>
+                            </div>
+                        </div>
+
+                        <!-- Extracted text preview block -->
+                        <div class="extracted-preview-wrapper">
+                            <div class="preview-header">
+                                <span id="previewHeaderLabel">Preview of Extracted Text Records</span>
+                                <button type="button" id="togglePreviewBtn" class="link-btn">Collapse View</button>
+                            </div>
+                            <textarea id="extractedTextarea" class="extracted-textarea" placeholder="Extracted text records will appear here..."></textarea>
+                        </div>
+
+                        <!-- Analyze Document Button -->
+                        <button type="button" id="analyzeDocBtn" class="primary-btn doc-analyze-btn">
+                            <span class="btn-text" id="analyzeDocBtnText">Analyze Document Sentiment</span>
+                            <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M22 2L11 13"/>
+                                <path d="M22 2L15 22L11 13L2 9L22 2Z"/>
+                            </svg>
+                            <div class="btn-loader hidden"></div>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right: Results Card -->
+            <div id="resultsCard" class="glass-card results-card">
+                <!-- Empty State -->
+                <div id="resultsEmptyState" class="empty-state">
+                    <div class="empty-icon-wrapper">
+                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M21 15C21 15.5304 20.7893 16.0391 20.4142 16.4142C20.0391 16.7893 19.5304 17 19 17H7L3 21V5C3 4.46957 3.21071 3.96086 3.58579 3.58579C3.96086 3.21071 4.46957 3 5 3H19C19.5304 3 20.0391 3.21071 20.4142 3.58579C20.7893 3.96086 21 4.46957 21 5V15Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                    <h3 class="reveal-heading-ltr">Ready to Analyze Your Feedback</h3>
+                    <p>Paste text or upload a spreadsheet or document on the left to see positive and negative counts, key highlights, and an interactive entry explorer.</p>
+                </div>
+
+                <!-- Skeleton Loader -->
+                <div id="resultsLoader" class="skeleton-loader hidden">
+                    <div class="skeleton skeleton-title"></div>
+                    <div class="skeleton skeleton-gauge"></div>
+                    <div class="skeleton skeleton-bar"></div>
+                    <div class="skeleton skeleton-bar"></div>
+                    <div class="skeleton skeleton-bar"></div>
+                </div>
+
+                <!-- Results Content -->
+                <div id="resultsContent" class="results-content hidden">
+                    <!-- Document Banner (if document mode was analyzed) -->
+                    <div id="resultDocBanner" class="result-doc-banner hidden">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="banner-icon">
+                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                            <polyline points="14 2 14 8 20 8"></polyline>
+                        </svg>
+                        <div class="banner-info">
+                            <span class="banner-label">Document Analyzed</span>
+                            <span id="bannerDocName" class="banner-name">sample.xlsx</span>
+                        </div>
+                    </div>
+
+                    <!-- Sentiment Header & Expressive Mood Orb -->
+                    <div class="results-header">
+                        <div class="header-left-cluster">
+                            <div id="moodReactionOrb" class="mood-reaction-orb neutral" title="Live Emotion Reaction">
+                                <span id="moodReactionEmoji" class="mood-emoji">😐</span>
+                                <div class="orb-pulse-ring"></div>
+                            </div>
+                            <div class="header-title-text">
+                                <h3 id="resultsTitle" class="reveal-heading-ltr">Tone & Sentiment</h3>
+                                <span class="results-subtitle" id="resultsSubtitle">AI sentiment evaluation</span>
+                            </div>
+                        </div>
+                        <div class="header-right-cluster">
+                            <button type="button" id="suggestedImprovementsBtn" class="suggested-improvements-btn" title="Generate practical recommendations based on your content">
+                                <svg class="improvements-mini-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                                </svg>
+                                <span>Suggested Improvements</span>
+                            </button>
+                            <div class="soundwave-equalizer" id="soundwaveEqualizer" title="Emotional Intensity">
+                                <span class="sw-bar"></span>
+                                <span class="sw-bar"></span>
+                                <span class="sw-bar"></span>
+                                <span class="sw-bar"></span>
+                                <span class="sw-bar"></span>
+                            </div>
+                            <div id="sentimentBadge" class="sentiment-badge neutral">
+                                <span id="sentimentText">Neutral</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- BATCH REVIEWS SUMMARY GRID -->
+                    <div id="batchKpiContainer" class="batch-kpi-container hidden">
+                        <div class="kpi-grid">
+                            <div class="kpi-card total-kpi" id="kpiCardTotal" data-filter="all" title="Click to view all entries">
+                                <span class="kpi-title">Total Records</span>
+                                <span class="kpi-num" id="kpiTotalReviews">0</span>
+                                <span class="kpi-sub">analyzed</span>
+                                <span class="kpi-card-hint">Click to view all</span>
+                            </div>
+                            <div class="kpi-card pos-kpi" id="kpiCardPos" data-filter="positive" title="Click to filter positive entries">
+                                <span class="kpi-title">Positive Tone</span>
+                                <span class="kpi-num" id="kpiPosCount">0</span>
+                                <span class="kpi-sub" id="kpiPosPct">0.0%</span>
+                                <span class="kpi-card-hint">Click to filter</span>
+                            </div>
+                            <div class="kpi-card neg-kpi" id="kpiCardNeg" data-filter="negative" title="Click to filter negative entries">
+                                <span class="kpi-title">Critical Tone</span>
+                                <span class="kpi-num" id="kpiNegCount">0</span>
+                                <span class="kpi-sub" id="kpiNegPct">0.0%</span>
+                                <span class="kpi-card-hint">Click to filter</span>
+                            </div>
+                            <div class="kpi-card neu-kpi" id="kpiCardNeu" data-filter="neutral" title="Click to filter neutral entries">
+                                <span class="kpi-title">Neutral Tone</span>
+                                <span class="kpi-num" id="kpiNeuCount">0</span>
+                                <span class="kpi-sub" id="kpiNeuPct">0.0%</span>
+                                <span class="kpi-card-hint">Click to filter</span>
+                            </div>
+                        </div>
+
+                        <!-- Segmented Review Bar -->
+                        <div class="segmented-bar-wrapper">
+                            <div class="segmented-bar" id="segmentedBarTrack" role="group" aria-label="Sentiment distribution segmented bar">
+                                <div id="segPosBar" class="seg-fill seg-pos" style="width: 33.3%" title="Positive entries (Click to filter & download)" tabindex="0" role="button"></div>
+                                <div id="segNeuBar" class="seg-fill seg-neu" style="width: 33.3%" title="Neutral entries (Click to filter)" tabindex="0" role="button"></div>
+                                <div id="segNegBar" class="seg-fill seg-neg" style="width: 33.3%" title="Negative entries (Click to filter & download)" tabindex="0" role="button"></div>
+                            </div>
+                            <div class="segmented-legend-row">
+                                <div class="segmented-legend">
+                                    <span class="legend-item" id="legendPosItem"><i class="dot dot-pos"></i> Positive</span>
+                                    <span class="legend-item" id="legendNeuItem"><i class="dot dot-neu"></i> Neutral</span>
+                                    <span class="legend-item" id="legendNegItem"><i class="dot dot-neg"></i> Critical</span>
+                                </div>
+                                <div class="segmented-quick-downloads">
+                                    <button type="button" id="quickDlPosBtn" class="quick-dl-pill pill-pos" title="Download all positive text entries as CSV">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="dl-mini-icon">
+                                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                            <polyline points="7 10 12 15 17 10"></polyline>
+                                            <line x1="12" y1="15" x2="12" y2="3"></line>
+                                        </svg>
+                                        <span><span class="desktop-only-inline">Download Positive Texts (.csv)</span><span class="mobile-only-inline">⬇ Positive (.csv)</span></span>
+                                    </button>
+                                    <button type="button" id="quickDlNegBtn" class="quick-dl-pill pill-neg" title="Download all negative text entries as CSV">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="dl-mini-icon">
+                                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                            <polyline points="7 10 12 15 17 10"></polyline>
+                                            <line x1="12" y1="15" x2="12" y2="3"></line>
+                                        </svg>
+                                        <span><span class="desktop-only-inline">Download Negative Texts (.csv)</span><span class="mobile-only-inline">⬇ Critical (.csv)</span></span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Expressive Mood Energy Meter -->
+                    <div class="compound-container" id="compoundContainer">
+                        <div class="compound-label">
+                            <div class="mood-label-cluster">
+                                <span class="mood-pulse-dot"></span>
+                                <span id="compoundScoreLabel">Mood Energy & Intensity</span>
+                            </div>
+                            <div class="mood-value-display">
+                                <span id="moodPercentageText" class="mood-pct-badge">+0%</span>
+                                <span id="compoundValue" class="value-highlight">0.00</span>
+                            </div>
+                        </div>
+                        <div class="score-explainer-row">
+                            <span id="compoundExplainer" class="compound-explainer">Awaiting text or document to scan...</span>
+                        </div>
+                        <div class="meter-wrapper">
+                            <div class="meter-track" id="meterTrack">
+                                <div class="meter-glow-fill" id="meterGlowFill"></div>
+                                <div class="meter-midpoint"></div>
+                                <div id="meterPointer" class="meter-pointer"></div>
+                                <div id="meterTooltip" class="meter-tooltip">Mood: Neutral</div>
+                            </div>
+                            <div class="meter-labels">
+                                <span class="spectrum-tag tag-neg"><span class="desktop-only-inline">💔 Critical / Dissatisfied</span><span class="mobile-only-inline">💔 Critical</span></span>
+                                <span class="spectrum-tag tag-neu"><span class="desktop-only-inline">⚖️ Balanced & Calm</span><span class="mobile-only-inline">⚖️ Neutral</span></span>
+                                <span class="spectrum-tag tag-pos"><span class="desktop-only-inline">✨ Delighted & Joyful</span><span class="mobile-only-inline">✨ Positive</span></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- TOP CRITICAL & GLOWING REVIEWS CALLOUTS -->
+                    <div id="topHighlightsSection" class="top-highlights-section hidden">
+                        <div class="highlights-split-grid">
+                            <!-- Top Critical Negative Reviews -->
+                            <div class="highlight-box critical-box">
+                                <div class="highlight-box-header">
+                                    <div class="highlight-title-group">
+                                        <span class="box-tag critical-tag">Top Complaints & Issues</span>
+                                        <span class="box-badge" id="criticalBadge">Most Urgent Issues</span>
+                                    </div>
+                                    <button type="button" id="downloadNegHighlightsBtn" class="download-segment-btn btn-neg" title="Download all negative text entries as CSV">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="dl-icon">
+                                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                            <polyline points="7 10 12 15 17 10"></polyline>
+                                            <line x1="12" y1="15" x2="12" y2="3"></line>
+                                        </svg>
+                                        <span>Download Negative Texts</span>
+                                    </button>
+                                </div>
+                                <div id="criticalReviewsList" class="highlight-cards-list">
+                                    <!-- Dynamic -->
+                                </div>
+                            </div>
+
+                            <!-- Top Glowing Positive Reviews -->
+                            <div class="highlight-box glowing-box">
+                                <div class="highlight-box-header">
+                                    <div class="highlight-title-group">
+                                        <span class="box-tag glowing-tag">Top Praises & Highlights</span>
+                                        <span class="box-badge" id="glowingBadge">Strongest Highlights</span>
+                                    </div>
+                                    <button type="button" id="downloadPosHighlightsBtn" class="download-segment-btn btn-pos" title="Download all positive text entries as CSV">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="dl-icon">
+                                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                            <polyline points="7 10 12 15 17 10"></polyline>
+                                            <line x1="12" y1="15" x2="12" y2="3"></line>
+                                        </svg>
+                                        <span>Download Positive Texts</span>
+                                    </button>
+                                </div>
+                                <div id="glowingReviewsList" class="highlight-cards-list">
+                                    <!-- Dynamic -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- INTERACTIVE REVIEW EXPLORER -->
+                    <div id="reviewExplorerSection" class="review-explorer-section hidden">
+                        <div class="explorer-header">
+                            <div class="explorer-title-group">
+                                <h4 class="reveal-heading-ltr">Browse & Search Extracted Entries</h4>
+                                <span class="explorer-count" id="explorerCountText">Showing all entries</span>
+                            </div>
+                            <div class="export-actions-group">
+                                <button type="button" id="downloadPosExplorerBtn" class="segment-export-btn btn-pos" title="Download only positive texts as CSV">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="export-icon">
+                                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                        <polyline points="7 10 12 15 17 10"></polyline>
+                                        <line x1="12" y1="15" x2="12" y2="3"></line>
+                                    </svg>
+                                    <span>Positive (.csv)</span>
+                                </button>
+                                <button type="button" id="downloadNegExplorerBtn" class="segment-export-btn btn-neg" title="Download only negative texts as CSV">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="export-icon">
+                                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                        <polyline points="7 10 12 15 17 10"></polyline>
+                                        <line x1="12" y1="15" x2="12" y2="3"></line>
+                                    </svg>
+                                    <span>Negative (.csv)</span>
+                                </button>
+                                <button type="button" id="exportCsvBtn" class="export-btn" title="Download entries as CSV">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="export-icon">
+                                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                        <polyline points="7 10 12 15 17 10"></polyline>
+                                        <line x1="12" y1="15" x2="12" y2="3"></line>
+                                    </svg>
+                                    <span id="exportCsvBtnLabel">Export All (.csv)</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Explorer Filter Controls -->
+                        <div class="explorer-controls">
+                            <!-- Filter Tabs -->
+                            <div class="explorer-tabs">
+                                <button type="button" class="exp-tab-btn active" data-filter="all" id="filterTabAll">
+                                    All <span class="tab-cnt" id="cntAll">0</span>
+                                </button>
+                                <button type="button" class="exp-tab-btn" data-filter="positive" id="filterTabPos">
+                                    <span class="tab-dot dot-pos"></span>Positive <span class="tab-cnt" id="cntPos">0</span>
+                                </button>
+                                <button type="button" class="exp-tab-btn" data-filter="negative" id="filterTabNeg">
+                                    <span class="tab-dot dot-neg"></span>Negative <span class="tab-cnt" id="cntNeg">0</span>
+                                </button>
+                                <button type="button" class="exp-tab-btn" data-filter="neutral" id="filterTabNeu">
+                                    <span class="tab-dot dot-neu"></span>Neutral <span class="tab-cnt" id="cntNeu">0</span>
+                                </button>
+                            </div>
+
+                            <!-- Search Input -->
+                            <div class="explorer-search-wrapper">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="search-icon">
+                                    <circle cx="11" cy="11" r="8"></circle>
+                                    <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                                </svg>
+                                <input type="text" id="explorerSearchInput" placeholder="Search entries by keyword (e.g. delivery, quality, performance, service)..." class="explorer-search-input">
+                            </div>
+                        </div>
+
+                        <!-- Scrollable Reviews List -->
+                        <div id="explorerReviewsList" class="explorer-reviews-list">
+                            <!-- Dynamic review cards -->
+                        </div>
+                    </div>
+
+                    <!-- INTERACTIVE EMOTION WORD MAP -->
+                    <div id="emotionScanSection" class="emotion-scan-section hidden">
+                        <div class="scan-header">
+                            <div class="scan-title-wrap">
+                                <span class="scan-pulse-icon">🔍</span>
+                                <h4>Interactive Emotion Map</h4>
+                            </div>
+                            <span class="scan-instruction"><span class="desktop-only-inline">Hover over highlighted words to reveal emotional polarity</span><span class="mobile-only-inline">Tap highlighted words to view emotion score</span></span>
+                        </div>
+                        <div id="emotionScanContent" class="emotion-scan-content">
+                            <!-- Dynamic text with glowing emotion badges -->
+                        </div>
+                    </div>
+
+                    <!-- WORDS POWERING THE EMOTION -->
+                    <div class="drivers-container" id="driversContainer">
+                        <div class="drivers-header-wrap">
+                            <h4 class="reveal-heading-ltr">Words Powering the Emotion</h4>
+                            <span class="drivers-subtext">Key positive and negative vocabulary detected in your input</span>
+                        </div>
+                        <div class="drivers-grid">
+                            <div class="driver-column col-pos">
+                                <h5><span class="driver-emoji">🌟</span> Positive Tone Triggers</h5>
+                                <div id="posDrivers" class="tags-wrapper">
+                                    <span class="empty-tag">None detected</span>
+                                </div>
+                            </div>
+                            <div class="driver-column col-neg">
+                                <h5><span class="driver-emoji">⚠️</span> Critical & Concern Triggers</h5>
+                                <div id="negDrivers" class="tags-wrapper">
+                                    <span class="empty-tag">None detected</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Expressive Animated Robot Assistant Companion -->
+    <aside id="robotAssistant" class="robot-assistant state-idle" aria-label="SentiBot Sentiment Assistant">
+        <!-- Floating Speech Bubble -->
+        <div id="robotSpeechBubble" class="robot-speech-bubble" role="status" aria-live="polite">
+            <div class="speech-header">
+                <span class="assistant-name">SentiBot AI</span>
+                <span id="robotStateBadge" class="state-badge">Idle</span>
+            </div>
+            <p id="robotMessage" class="speech-text">Hi! I'm here to help you understand sentiment.</p>
+            <div class="speech-arrow"></div>
+        </div>
+
+        <!-- Robot Interactive Pod -->
+        <div class="robot-pod-wrapper">
+            <button type="button" id="robotPodBtn" class="robot-pod" aria-label="Interact with SentiBot Assistant" title="Click to greet SentiBot">
+                <!-- Glowing Energy Aura Halo -->
+                <div class="robot-halo-ring"></div>
+                <!-- Complete Character Video Container with Transparent Background Canvas -->
+                <div class="robot-frame">
+                    <video id="robotAvatarVideo" class="robot-video robot-video-source" autoplay loop muted playsinline preload="auto" crossorigin="anonymous">
+                        <source src="/robot/robot.mp4" type="video/mp4">
+                    </video>
+                    <canvas id="robotCanvas" class="robot-canvas" width="280" height="280" aria-label="Animated SentiBot Mascot"></canvas>
+                    <img id="robotAvatarImg" src="/robot/robot.jpg" alt="SentiMind Robot Mascot" class="robot-img robot-fallback-img hidden" loading="eager" />
+                </div>
+            </button>
+            <!-- Minimize / Expand Toggle -->
+            <button type="button" id="robotToggleBtn" class="robot-toggle-pill" aria-label="Toggle Assistant Window" title="Minimize / Expand Assistant">
+                <span class="toggle-dot"></span>
+                <span id="robotToggleLabel" class="toggle-text">Assistant</span>
+            </button>
+        </div>
+    </aside>
+
+    <!-- Actionable Suggested Improvements Modal Dialog -->
+    <div id="improvementsModal" class="improvements-modal-backdrop hidden" role="dialog" aria-modal="true" aria-labelledby="improvementsModalTitle">
+        <div class="improvements-modal-card">
+            <div class="improvements-modal-header">
+                <div class="improvements-header-left">
+                    <div class="improvements-badge-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                        </svg>
+                    </div>
+                    <div>
+                        <h3 id="improvementsModalTitle" class="improvements-modal-title">Suggested Improvements</h3>
+                        <p class="improvements-modal-desc">Clear, practical tips to boost customer satisfaction and improve your product</p>
+                    </div>
+                </div>
+                <button type="button" id="closeImprovementsModalBtn" class="improvements-close-btn" aria-label="Close dialog" title="Close (Esc)">✕</button>
+            </div>
+
+            <div class="improvements-modal-body">
+                <!-- Dominant Sentiment Context Card -->
+                <div class="improvements-context-card" id="improvementsContextCard">
+                    <div class="context-label">ANALYSIS CONTEXT</div>
+                    <div class="context-sentiment-row">
+                        <span id="improvementsSentimentBadge" class="improvements-sent-badge">Positive 😄</span>
+                        <span id="improvementsConfidenceText" class="improvements-conf-text">High Confidence (94%)</span>
+                    </div>
+                    <p id="improvementsRationaleMsg" class="improvements-rationale-msg">Dominant sentiment rationale based on evaluated context.</p>
+                </div>
+
+                <!-- Structured Recommendations List -->
+                <div class="improvements-list-container">
+                    <h4 class="improvements-section-heading">RECOMMENDED NEXT STEPS</h4>
+                    <div id="improvementsCardsList" class="improvements-cards-list">
+                        <!-- Populated dynamically via JS -->
+                    </div>
+                </div>
+            </div>
+
+            <div class="improvements-modal-footer">
+                <button type="button" id="copyImprovementsBtn" class="improvements-copy-btn">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="btn-mini-icon">
+                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                    </svg>
+                    <span id="copyImprovementsBtnText">Copy Recommendations</span>
+                </button>
+                <button type="button" id="dismissImprovementsBtn" class="improvements-done-btn">Done</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Local Script -->
+    <script src="{{ url_for('static', filename='js/main.js') }}?v=mobile-perf-v3"></script>
+</body>
+</html>
