@@ -777,6 +777,11 @@ def serve_robot(filename):
     robot_dir = os.path.join(app.root_path, 'public', 'robot')
     return send_from_directory(robot_dir, filename)
 
+@app.route('/favicon.ico')
+def favicon():
+    robot_dir = os.path.join(app.root_path, 'public', 'robot')
+    return send_from_directory(robot_dir, 'robot_face.png', mimetype='image/png')
+
 @app.route('/extract-document', methods=['POST'])
 def extract_document():
     if 'file' not in request.files:
