@@ -782,6 +782,16 @@ def favicon():
     robot_dir = os.path.join(app.root_path, 'public', 'robot')
     return send_from_directory(robot_dir, 'robot_face.png', mimetype='image/png')
 
+@app.route('/robots.txt')
+def robots_txt():
+    public_dir = os.path.join(app.root_path, 'public')
+    return send_from_directory(public_dir, 'robots.txt', mimetype='text/plain')
+
+@app.route('/sitemap.xml')
+def sitemap_xml():
+    public_dir = os.path.join(app.root_path, 'public')
+    return send_from_directory(public_dir, 'sitemap.xml', mimetype='application/xml')
+
 @app.route('/static/<path:filename>')
 def serve_static(filename):
     static_dir = os.path.join(app.root_path, 'static')
