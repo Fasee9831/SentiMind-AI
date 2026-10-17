@@ -30,7 +30,7 @@
     <link rel="icon" type="image/png" href="{{ url_for('serve_robot', filename='robot_face.png') }}">
     
     <!-- Local Stylesheet -->
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}?v=mobile-perf-v3">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}?v=robot-full-v5">
 </head>
 <body class="preloader-active">
     <!-- SentiMind.ai Premium Cinema Robot Preloader Experience -->
@@ -73,8 +73,8 @@
             muted
             playsinline 
             webkit-playsinline
-            preload="metadata"
-            src="/robot/preloader.mp4?v=clean-hd"
+            preload="auto"
+            src="/robot/preloader.mp4"
         ></video>
 
         <!-- Fallback Robot Image (Displayed if Video fails to load or play) -->
@@ -660,7 +660,7 @@
                 <div class="robot-halo-ring"></div>
                 <!-- Complete Character Video Container with Transparent Background Canvas -->
                 <div class="robot-frame">
-                    <video id="robotAvatarVideo" class="robot-video robot-video-source" autoplay loop muted playsinline preload="auto" crossorigin="anonymous">
+                    <video id="robotAvatarVideo" class="robot-video robot-video-source" autoplay loop muted playsinline preload="auto">
                         <source src="/robot/robot.mp4" type="video/mp4">
                     </video>
                     <canvas id="robotCanvas" class="robot-canvas" width="280" height="280" aria-label="Animated SentiBot Mascot"></canvas>
@@ -727,6 +727,6 @@
     </div>
 
     <!-- Local Script -->
-    <script src="{{ url_for('static', filename='js/main.js') }}?v=mobile-perf-v3"></script>
+    <script src="{{ url_for('static', filename='js/main.js') }}?v=robot-full-v5"></script>
 </body>
 </html>

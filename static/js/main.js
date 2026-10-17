@@ -52,10 +52,9 @@ document.addEventListener('DOMContentLoaded', () => {
         let isExiting = false;
         const progressFill = document.getElementById('preloaderProgressFill');
 
-        // Skip intro immediately if already seen in this session or requested via query param
+        // Only skip intro if explicitly requested in URL query (?skip_intro=1)
         const urlParams = new URLSearchParams(window.location.search);
-        const hasSeenIntro = sessionStorage.getItem('sentimind_preloader_seen') === 'true';
-        if ((urlParams.get('skip_intro') === '1' || hasSeenIntro) && !window.__isManualReplay) {
+        if (urlParams.get('skip_intro') === '1' && !window.__isManualReplay) {
             exitPreloader(true);
             return;
         }
@@ -74,10 +73,6 @@ document.addEventListener('DOMContentLoaded', () => {
             if (isExiting) return;
             isExiting = true;
             window.__isManualReplay = false;
-
-            try {
-                sessionStorage.setItem('sentimind_preloader_seen', 'true');
-            } catch (e) {}
 
             if (immediate) {
                 if (video) {
@@ -206,11 +201,13 @@ document.addEventListener('DOMContentLoaded', () => {
             updateAudioUI(false);
             const playPromise = video.play();
             if (playPromise !== undefined) {
-                playPromise.catch(() => {
-                    // In case autoplay was blocked altogether
-                    if (fallback) fallback.style.display = 'flex';
-                    video.style.display = 'none';
-                    setTimeout(() => exitPreloader(false), 2000);
+                playPromise.catch((err) => {
+                    console.log('Video autoplay deferred by browser:', err);
+                    const resumeOnInteract = () => {
+                        video.play().catch(() => {});
+                    };
+                    window.addEventListener('touchstart', resumeOnInteract, { once: true });
+                    window.addEventListener('click', resumeOnInteract, { once: true });
                 });
             }
         } else {
@@ -997,18 +994,6 @@ document.addEventListener('DOMContentLoaded', () => {
             const video = this.robotVideo;
             const canvas = this.robotCanvas;
             if (!video || !canvas) return;
-
-            // On mobile or small screens, bypass the CPU-heavy per-pixel loop completely
-            // This ensures instant touch response, zero battery drain, and silky smooth 60fps scrolling
-            const isMobile = window.innerWidth <= 768 || ('ontouchstart' in window);
-            if (isMobile) {
-                if (canvas) canvas.style.display = 'none';
-                if (this.robotImg) {
-                    this.robotImg.classList.remove('hidden');
-                    this.robotImg.src = '/robot/robot_face.png';
-                }
-                return;
-            }
 
             const ctx = canvas.getContext('2d', { willReadFrequently: true });
             if (!ctx) return;
