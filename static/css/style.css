@@ -137,45 +137,7 @@
     --shadow-card-hover: 0 3px 8px rgba(0, 0, 0, 0.5), 0 12px 28px -4px rgba(0, 0, 0, 0.45);
 }
 
-/* Fallback for system color-scheme when data-theme is not set */
-@media (prefers-color-scheme: dark) {
-    :root:not([data-theme="light"]):not([data-theme="dark"]) {
-        --bg-page: #191919;
-        --bg-card: #242424;
-        --bg-elevated: #2D2D2D;
-        --bg-surface-hover: #363636;
-        --bg-input: #1E1E1E;
-        --border-color: #3B3B3B;
-        --border-subtle: #2C2C2C;
-        --border-strong: #4F4F4F;
-        --border-focus: #F5C842;
-        --text-primary: #F7F7F5;
-        --text-secondary: #B8B8B3;
-        --text-tertiary: #80807C;
-        --accent: #F5C842;
-        --accent-hover: #FFD454;
-        --accent-text: #191919;
-        --accent-subtle: #39321D;
-        --accent-border: rgba(245, 200, 66, 0.4);
-        --focus-ring: 0 0 0 3px rgba(245, 200, 66, 0.35);
-        --positive: #4ADE80;
-        --positive-bg: rgba(34, 197, 94, 0.16);
-        --positive-border: rgba(34, 197, 94, 0.32);
-        --positive-solid: #22C55E;
-        --neutral: #FBBF24;
-        --neutral-bg: rgba(245, 158, 11, 0.16);
-        --neutral-border: rgba(245, 158, 11, 0.32);
-        --neutral-solid: #F59E0B;
-        --negative: #F87171;
-        --negative-bg: rgba(239, 68, 68, 0.16);
-        --negative-border: rgba(239, 68, 68, 0.32);
-        --negative-solid: #EF4444;
-        --warning: #FBBF24;
-        --warning-bg: rgba(245, 158, 11, 0.16);
-        --warning-border: rgba(245, 158, 11, 0.32);
-        --shadow-card: 0 1px 3px rgba(0, 0, 0, 0.4), 0 6px 18px -4px rgba(0, 0, 0, 0.35);
-    }
-}
+
 
 /* --------------------------------------------------------------------------
    3. Base Layout & Universal Highlight / Selection Prevention

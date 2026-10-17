@@ -2265,17 +2265,6 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             updateThemeUI(target);
         });
-
-        try {
-            const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
-            mediaQuery.addEventListener('change', (e) => {
-                if (!localStorage.getItem('sentimind-theme')) {
-                    const newSysTheme = e.matches ? 'dark' : 'light';
-                    document.documentElement.setAttribute('data-theme', newSysTheme);
-                    updateThemeUI(newSysTheme);
-                }
-            });
-        } catch (e) {}
     }
 
 
