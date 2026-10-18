@@ -4,24 +4,95 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="google-site-verification" content="I-tjxI4e4tfZHAsxLKF7GgRkcUsgfRpRkP6E92Jtdx4" />
-    <meta name="robots" content="index, follow">
-    <meta name="description" content="A next-generation real-time sentiment analysis and document intelligence platform. Analyze text documents, spreadsheets, Excel (.xlsx, .xls), CSV, PDFs, and Word documents.">
-    <link rel="canonical" href="https://senti-mind-ai.vercel.app/">
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+    <meta name="description" content="Free online AI Sentiment Analyzer. Instantly analyze sentiment, tone, and emotions in text, reviews, CSV, Excel spreadsheets, PDFs, and Word documents with actionable insights.">
+    <meta name="keywords" content="sentiment analyzer, zendimind, free sentiment analyzer, ai sentiment analyzer, sentiment analysis online, sentiment analysis tool, text sentiment analyzer, customer feedback analysis, excel sentiment analysis, document sentiment analyzer">
+    <link rel="canonical" href="https://zendimind.vercel.app/">
 
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://senti-mind-ai.vercel.app/">
-    <meta property="og:title" content="SentiMind AI - Document & Text Sentiment Intelligence">
-    <meta property="og:description" content="Real-time sentiment analysis and document intelligence platform. Analyze text, CSV, Excel, PDF, and Word documents.">
-    <meta property="og:image" content="https://senti-mind-ai.vercel.app/robot/robot_face.png">
+    <meta property="og:url" content="https://zendimind.vercel.app/">
+    <meta property="og:title" content="Sentiment Analyzer - Free Online AI Tool | ZendiMind AI">
+    <meta property="og:description" content="Free real-time AI Sentiment Analyzer. Analyze customer feedback, reviews, text, CSV, Excel, PDF, and Word documents with accurate emotion detection.">
+    <meta property="og:image" content="https://zendimind.vercel.app/robot/robot_face.png">
 
     <!-- Twitter -->
-    <meta name="twitter:card" content="summary">
-    <meta name="twitter:title" content="SentiMind AI - Document & Text Sentiment Intelligence">
-    <meta name="twitter:description" content="Real-time sentiment analysis and document intelligence platform.">
-    <meta name="twitter:image" content="https://senti-mind-ai.vercel.app/robot/robot_face.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="https://zendimind.vercel.app/">
+    <meta name="twitter:title" content="Sentiment Analyzer - Free Online AI Tool | ZendiMind AI">
+    <meta name="twitter:description" content="Free real-time AI Sentiment Analyzer for text, CSV, Excel spreadsheets, PDFs, and Word documents.">
+    <meta name="twitter:image" content="https://zendimind.vercel.app/robot/robot_face.png">
 
-    <title>SentiMind AI - Document & Text Sentiment Intelligence</title>
+    <title>Sentiment Analyzer - Free Online AI Sentiment Analysis Tool | ZendiMind AI</title>
+
+    <!-- Schema.org JSON-LD Structured Data for Search Engine Rich Snippets -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "WebApplication",
+          "@id": "https://zendimind.vercel.app/#webapp",
+          "name": "ZendiMind AI Sentiment Analyzer",
+          "alternateName": ["ZendiMind", "Sentiment Analyzer", "Free Sentiment Analyzer Online", "AI Sentiment Analysis Tool"],
+          "url": "https://zendimind.vercel.app/",
+          "description": "Free real-time AI Sentiment Analyzer for text, CSV, Excel spreadsheets, PDFs, and Word documents with emotion detection and actionable recommendations.",
+          "applicationCategory": "BusinessApplication",
+          "operatingSystem": "All",
+          "browserRequirements": "Requires JavaScript. Requires HTML5.",
+          "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "USD"
+          },
+          "featureList": [
+            "Real-time text sentiment analyzer",
+            "Batch document sentiment analysis (CSV, Excel, PDF, DOCX)",
+            "Emotion and tone detection (Joy, Sadness, Anger, Fear, Neutral)",
+            "Actionable business recommendations and score breakdown"
+          ]
+        },
+        {
+          "@type": "FAQPage",
+          "@id": "https://zendimind.vercel.app/#faq",
+          "mainEntity": [
+            {
+              "@type": "Question",
+              "name": "What is a sentiment analyzer?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "A sentiment analyzer is an AI-powered natural language processing (NLP) tool that analyzes text to determine emotional tone. It detects whether customer feedback, reviews, or documents are positive, negative, or neutral."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Is this sentiment analyzer free to use?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Yes, ZendiMind AI provides a 100% free online sentiment analyzer for analyzing both individual sentences and batch uploaded documents like CSV, Excel, PDF, and Word files."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Can I upload spreadsheets and documents for sentiment analysis?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Yes, ZendiMind AI allows you to upload spreadsheets (.xlsx, .xls, .csv) and documents (.pdf, .docx, .txt) to automatically calculate sentiment distributions and download detailed reports."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "How does this sentiment analyzer work?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "The sentiment analyzer processes text using machine learning and lexicon scoring algorithms to evaluate polarity, subjectivity, and emotional drivers, delivering confidence scores and actionable recommendations."
+              }
+            }
+          ]
+        }
+      ]
+    }
+    </script>
     <!-- Google Fonts: Outfit (Headings) & Plus Jakarta Sans (Body) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -47,15 +118,15 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}?v=robot-full-v5">
 </head>
 <body class="preloader-active">
-    <!-- SentiMind.ai Premium Cinema Robot Preloader Experience -->
-    <aside id="startupPreloader" class="startup-preloader" role="dialog" aria-modal="true" aria-label="SentiMind.ai Startup Experience">
+    <!-- ZendiMind.ai Premium Cinema Robot Preloader Experience -->
+    <aside id="startupPreloader" class="startup-preloader" role="dialog" aria-modal="true" aria-label="ZendiMind.ai Startup Experience">
         <!-- Clean Glassmorphic Header Controls -->
         <header class="preloader-top-bar">
             <div class="preloader-brand">
                 <div class="preloader-brand-mark">
-                    <img src="{{ url_for('serve_robot', filename='robot_face.png') }}" class="preloader-robot-icon" alt="SentiMind AI Robot" width="24" height="24">
+                    <img src="{{ url_for('serve_robot', filename='robot_face.png') }}" class="preloader-robot-icon" alt="ZendiMind AI Robot" width="24" height="24">
                 </div>
-                <span class="preloader-brand-text">SentiMind<span class="brand-ai">.ai</span></span>
+                <span class="preloader-brand-text">ZendiMind<span class="brand-ai">.ai</span></span>
             </div>
 
             <div class="preloader-actions">
@@ -93,7 +164,7 @@
 
         <!-- Fallback Robot Image (Displayed if Video fails to load or play) -->
         <div id="preloaderFallback" class="preloader-fallback-card" style="display: none;">
-            <img src="/robot/robot.jpg" alt="SentiMind AI Assistant" class="preloader-fallback-img" />
+            <img src="/robot/robot.jpg" alt="ZendiMind AI Assistant" class="preloader-fallback-img" />
             <p class="fallback-status-text">Getting everything ready…</p>
         </div>
     </aside>
@@ -112,9 +183,9 @@
             <div class="top-nav">
                 <div class="logo-wrapper">
                     <div class="logo-mark">
-                        <img src="{{ url_for('serve_robot', filename='robot_face.png') }}" class="logo-robot-icon" alt="SentiMind AI Robot" width="28" height="28">
+                        <img src="{{ url_for('serve_robot', filename='robot_face.png') }}" class="logo-robot-icon" alt="ZendiMind AI Robot" width="28" height="28">
                     </div>
-                    <span class="logo-text">SentiMind<span class="logo-dot">.</span><span class="logo-accent">AI</span></span>
+                    <span class="logo-text">ZendiMind<span class="logo-dot">.</span><span class="logo-accent">AI</span></span>
                 </div>
 
                 <div class="nav-actions">
@@ -152,12 +223,12 @@
 
             <div class="header-content">
                 <h1 class="hero-title">
-                    <span class="reveal-text-ltr">Understand Sentiment</span>
+                    <span class="reveal-text-ltr">AI Sentiment Analyzer</span>
                     <span class="hero-typed-wrapper">
-                        <span class="typed-phrase" id="typedPhrase">in text, documents & feedback</span><span class="typewriter-cursor" aria-hidden="true">|</span>
+                        <span class="typed-phrase" id="typedPhrase">for text, documents & feedback</span><span class="typewriter-cursor" aria-hidden="true">|</span>
                     </span>
                 </h1>
-                <p class="subtitle reveal-subtitle" id="heroSubtitle" aria-label="Instantly analyze text documents, spreadsheets, customer feedback, and files to understand tone, sentiment, and key insights.">Instantly analyze text documents, spreadsheets, customer feedback, and files to understand tone, sentiment, and key insights.</p>
+                <p class="subtitle reveal-subtitle" id="heroSubtitle" aria-label="Free online AI sentiment analyzer for text, customer reviews, spreadsheets, and documents. Detect emotion, tone, and key drivers instantly.">Free online AI sentiment analyzer for text, customer reviews, spreadsheets, and documents. Detect emotion, tone, and key drivers instantly.</p>
             </div>
         </header>
 
@@ -653,23 +724,102 @@
                 </div>
             </div>
         </section>
+
+        <!-- SEO Knowledge Hub & FAQ Section for Search Engine Relevance -->
+        <section class="seo-info-section" id="seoInfoSection" aria-label="About ZendiMind AI Sentiment Analyzer">
+            <div class="seo-section-header">
+                <span class="seo-pill-badge">NLP Sentiment Intelligence</span>
+                <h2 class="seo-main-title">Why ZendiMind is the Leading Free AI Sentiment Analyzer</h2>
+                <p class="seo-main-desc">Engineered for businesses, researchers, and creators to decode the emotional tone behind customer reviews, survey data, support tickets, and documents in real time.</p>
+            </div>
+
+            <div class="seo-cards-grid">
+                <article class="seo-feature-card">
+                    <div class="seo-feature-icon" aria-hidden="true">⚡</div>
+                    <h3 class="seo-feature-title">Instant Text Sentiment Analysis</h3>
+                    <p class="seo-feature-desc">Evaluate sentences, customer reviews, social tweets, and feedback in milliseconds. Uncover dominant polarity—Positive, Neutral, or Negative—with granular confidence scores.</p>
+                </article>
+
+                <article class="seo-feature-card">
+                    <div class="seo-feature-icon" aria-hidden="true">📑</div>
+                    <h3 class="seo-feature-title">Batch Document & Spreadsheet Analysis</h3>
+                    <p class="seo-feature-desc">Upload Excel files (.xlsx, .xls), CSV datasets, PDFs, and Word (.docx) documents. Analyze bulk feedback at once with automated sentiment distribution KPIs and downloadable CSV reports.</p>
+                </article>
+
+                <article class="seo-feature-card">
+                    <div class="seo-feature-icon" aria-hidden="true">🎯</div>
+                    <h3 class="seo-feature-title">Emotion Triggers & Actionable Advice</h3>
+                    <p class="seo-feature-desc">Don't just see numbers—understand why. Our sentiment analyzer pinpoints exact positive praise and critical friction vocabulary, providing practical suggestions to improve customer delight.</p>
+                </article>
+            </div>
+
+            <!-- FAQ Section matching JSON-LD Schema -->
+            <div class="seo-faq-container">
+                <div class="faq-header">
+                    <h3 class="faq-title">Sentiment Analysis Frequently Asked Questions</h3>
+                    <p class="faq-subtitle">Everything you need to know about using our sentiment analyzer</p>
+                </div>
+
+                <div class="faq-accordion-list">
+                    <details class="faq-accordion-item">
+                        <summary class="faq-accordion-trigger">
+                            <span class="faq-q-text">What is a sentiment analyzer and how does it work?</span>
+                            <span class="faq-toggle-icon" aria-hidden="true"></span>
+                        </summary>
+                        <div class="faq-accordion-content">
+                            <p>A sentiment analyzer is an artificial intelligence and Natural Language Processing (NLP) tool that classifies the emotional tone of written text. ZendiMind AI evaluates word choice, context, emojis, punctuation intensity, and negated phrases (e.g. "not good") to calculate precise polarity and subjective tone.</p>
+                        </div>
+                    </details>
+
+                    <details class="faq-accordion-item">
+                        <summary class="faq-accordion-trigger">
+                            <span class="faq-q-text">Is this AI sentiment analyzer completely free?</span>
+                            <span class="faq-toggle-icon" aria-hidden="true"></span>
+                        </summary>
+                        <div class="faq-accordion-content">
+                            <p>Yes, ZendiMind AI is 100% free with no account creation, subscription, or software installation required. You can analyze single sentences, multiple paragraphs, or full files right from your web browser.</p>
+                        </div>
+                    </details>
+
+                    <details class="faq-accordion-item">
+                        <summary class="faq-accordion-trigger">
+                            <span class="faq-q-text">Can I analyze customer feedback in Excel, CSV, or PDF documents?</span>
+                            <span class="faq-toggle-icon" aria-hidden="true"></span>
+                        </summary>
+                        <div class="faq-accordion-content">
+                            <p>Yes. Select the <strong>Upload Spreadsheet or File</strong> tab above to upload .xlsx, .xls, .csv, .pdf, .docx, or .txt files. You can choose any text column in your sheet to run bulk sentiment classification, view KPI breakdowns, and export the analyzed data.</p>
+                        </div>
+                    </details>
+
+                    <details class="faq-accordion-item">
+                        <summary class="faq-accordion-trigger">
+                            <span class="faq-q-text">What types of content can I analyze with ZendiMind?</span>
+                            <span class="faq-toggle-icon" aria-hidden="true"></span>
+                        </summary>
+                        <div class="faq-accordion-content">
+                            <p>ZendiMind is optimized for product reviews (Amazon, App Store, Google Play), customer support tickets, NPS survey responses, employee feedback, social media comments, brand mentions, and business correspondence.</p>
+                        </div>
+                    </details>
+                </div>
+            </div>
+        </section>
     </main>
 
     <!-- Expressive Animated Robot Assistant Companion -->
-    <aside id="robotAssistant" class="robot-assistant state-idle" aria-label="SentiBot Sentiment Assistant">
+    <aside id="robotAssistant" class="robot-assistant state-idle" aria-label="ZendiBot Sentiment Assistant">
         <!-- Floating Speech Bubble -->
         <div id="robotSpeechBubble" class="robot-speech-bubble" role="status" aria-live="polite">
             <div class="speech-header">
-                <span class="assistant-name">SentiBot AI</span>
+                <span class="assistant-name">ZendiBot AI</span>
                 <span id="robotStateBadge" class="state-badge">Idle</span>
             </div>
-            <p id="robotMessage" class="speech-text">Hi! I'm here to help you understand sentiment.</p>
+            <p id="robotMessage" class="speech-text">Hi! I'm ZendiBot. I'm here to help you analyze sentiment.</p>
             <div class="speech-arrow"></div>
         </div>
 
         <!-- Robot Interactive Pod -->
         <div class="robot-pod-wrapper">
-            <button type="button" id="robotPodBtn" class="robot-pod" aria-label="Interact with SentiBot Assistant" title="Click to greet SentiBot">
+            <button type="button" id="robotPodBtn" class="robot-pod" aria-label="Interact with ZendiBot Assistant" title="Click to greet ZendiBot">
                 <!-- Glowing Energy Aura Halo -->
                 <div class="robot-halo-ring"></div>
                 <!-- Complete Character Video Container with Transparent Background Canvas -->
@@ -677,8 +827,8 @@
                     <video id="robotAvatarVideo" class="robot-video robot-video-source" autoplay loop muted playsinline preload="auto">
                         <source src="/robot/robot.mp4" type="video/mp4">
                     </video>
-                    <canvas id="robotCanvas" class="robot-canvas" width="280" height="280" aria-label="Animated SentiBot Mascot"></canvas>
-                    <img id="robotAvatarImg" src="/robot/robot.jpg" alt="SentiMind Robot Mascot" class="robot-img robot-fallback-img hidden" loading="eager" />
+                    <canvas id="robotCanvas" class="robot-canvas" width="280" height="280" aria-label="Animated ZendiBot Mascot"></canvas>
+                    <img id="robotAvatarImg" src="/robot/robot.jpg" alt="ZendiBot Robot Mascot" class="robot-img robot-fallback-img hidden" loading="eager" />
                 </div>
             </button>
             <!-- Minimize / Expand Toggle -->

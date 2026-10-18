@@ -926,7 +926,7 @@ document.addEventListener('DOMContentLoaded', () => {
             // Contextual Assistant Messages
             const defaultMessages = {
                 'idle': "Ready when you are! Type some text or drop a file.",
-                'welcome': "Hi! I'm here to help you understand sentiment.",
+                'welcome': "Hi! I'm ZendiBot. I'm here to help you analyze sentiment.",
                 'thinking': "Let me take a closer look...",
                 'success': "Your analysis is ready!",
                 'positive': "Looks like a wonderful, positive tone!",
@@ -1726,7 +1726,7 @@ document.addEventListener('DOMContentLoaded', () => {
         copyImprovementsBtn.addEventListener('click', () => {
             if (!currentAnalysisData) return;
             const sentimentLabel = currentAnalysisData.sentiment || 'Neutral';
-            let text = `SentiMind.ai - Suggested Improvements\n`;
+            let text = `ZendiMind.ai - Suggested Improvements\n`;
             text += `Dominant Sentiment: ${sentimentLabel} (${currentAnalysisData.confidence || 'Moderate'} Confidence)\n`;
             text += `Context: ${currentAnalysisData.confidence_message || ''}\n\n`;
 

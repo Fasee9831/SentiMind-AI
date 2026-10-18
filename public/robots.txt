@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://senti-mind-ai.vercel.app/sitemap.xml
+Sitemap: https://zendimind.vercel.app/sitemap.xml
